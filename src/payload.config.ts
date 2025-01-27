@@ -10,7 +10,6 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import Media from './collections/Media'
 import Questions from './collections/Questions'
-import previewEndpoint from './endpoints.ts/previewEndpoint'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,5 +35,4 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  endpoints: [previewEndpoint], // Add the preview route here
 })

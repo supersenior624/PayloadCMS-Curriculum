@@ -1,14 +1,14 @@
 // src/collections/questions.ts
-import { CollectionConfig } from 'payload';
+import { CollectionConfig } from 'payload'
 
 const Questions: CollectionConfig = {
     slug: 'questions',
     admin: {
         useAsTitle: 'title',
-        preview: (doc, config) => {
-            // Live preview URL
-            return `${config}/preview/questions/${doc.id}`;
-        },
+        // preview: (doc, config) => {
+        //     // Live preview URL
+        //     return `${config}/preview/questions/${doc.id}`;
+        // },
     },
     fields: [
         // Question Title
@@ -185,6 +185,6 @@ const Questions: CollectionConfig = {
         ],
         },
     ],
-};
+}
 
-export default Questions;
+export default Questions
