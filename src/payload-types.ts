@@ -101,56 +101,39 @@ export interface Media {
  */
 export interface Question {
   id: string;
-  title: string;
-  type: 'cloze-drag-drop' | 'label-image-drag-drop' | 'number-line-drag-drop';
-  composeQuestion: string;
+  questionID: string;
+  questionType: 'multipleChoice' | 'dragAndDrop' | 'fillInTheBlanks';
   templateMarkup?: string | null;
-  possibleResponses?:
+  Zones?:
     | {
-        response?: string | null;
+        Zones?: {
+          zoneID?: string | null;
+          lable?: string | null;
+          coordinates?: {
+            x?: number | null;
+            y?: number | null;
+            width?: number | null;
+            height?: number | null;
+          };
+        };
         id?: string | null;
       }[]
     | null;
-  correctAnswers?:
+  Draggables?:
     | {
-        correctResponse?: string | null;
+        Draggables?: {
+          draggableImage?: (string | null) | Media;
+          correctZone?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
-  image?: (string | null) | Media;
-  responsePositions?:
-    | {
-        xCoordinate?: number | null;
-        yCoordinate?: number | null;
-        responseText?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  correctLabels?:
-    | {
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  lineRange?: {
-    minValue: number;
-    maxValue: number;
-  };
-  points?:
-    | {
-        point?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  correctPlacement?:
-    | {
-        pointLabel?: string | null;
-        position?: number | null;
-        id?: string | null;
-      }[]
-    | null;
+  createdBy?: (string | null) | User;
+  publishedAt?: string | null;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -251,58 +234,45 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "questions_select".
  */
 export interface QuestionsSelect<T extends boolean = true> {
-  title?: T;
-  type?: T;
-  composeQuestion?: T;
+  questionID?: T;
+  questionType?: T;
   templateMarkup?: T;
-  possibleResponses?:
+  Zones?:
     | T
     | {
-        response?: T;
+        Zones?:
+          | T
+          | {
+              zoneID?: T;
+              lable?: T;
+              coordinates?:
+                | T
+                | {
+                    x?: T;
+                    y?: T;
+                    width?: T;
+                    height?: T;
+                  };
+            };
         id?: T;
       };
-  correctAnswers?:
+  Draggables?:
     | T
     | {
-        correctResponse?: T;
+        Draggables?:
+          | T
+          | {
+              draggableImage?: T;
+              correctZone?: T;
+            };
         id?: T;
       };
-  image?: T;
-  responsePositions?:
-    | T
-    | {
-        xCoordinate?: T;
-        yCoordinate?: T;
-        responseText?: T;
-        id?: T;
-      };
-  correctLabels?:
-    | T
-    | {
-        label?: T;
-        id?: T;
-      };
-  lineRange?:
-    | T
-    | {
-        minValue?: T;
-        maxValue?: T;
-      };
-  points?:
-    | T
-    | {
-        point?: T;
-        id?: T;
-      };
-  correctPlacement?:
-    | T
-    | {
-        pointLabel?: T;
-        position?: T;
-        id?: T;
-      };
+  createdBy?: T;
+  publishedAt?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

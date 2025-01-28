@@ -1,190 +1,144 @@
-// src/collections/questions.ts
-import { CollectionConfig } from 'payload'
+import { CollectionConfig } from 'payload';
 
 const Questions: CollectionConfig = {
     slug: 'questions',
+    versions: {
+        drafts: true, // Enable draft functionality
+    },
     admin: {
-        useAsTitle: 'title',
-        // preview: (doc, config) => {
-        //     // Live preview URL
-        //     return `${config}/preview/questions/${doc.id}`;
-        // },
+        useAsTitle: 'questionID',
+        preview: (doc, config) => {
+        // Live preview URL
+        return `${config}/preview/questions/${doc.id}`;
+        },
     },
     fields: [
-        // Question Title
         {
-        name: 'title',
-        type: 'text',
-        label: 'Question Title',
-        required: true,
-        },
-        // Question Type
-        {
-        name: 'type',
-        type: 'select',
-        label: 'Question Type',
-        required: true,
-        options: [
-            { label: 'Cloze with Drag & Drop', value: 'cloze-drag-drop' },
-            { label: 'Label Image with Drag & Drop', value: 'label-image-drag-drop' },
-            { label: 'Number Line with Drag & Drop', value: 'number-line-drag-drop' },
-        ],
-        },
-        // Common Field: Compose Question
-        {
-        name: 'composeQuestion',
-        type: 'textarea',
-        label: 'Compose Question',
-        required: true,
-        },
-        // Cloze with Drag & Drop Fields
-        {
-        name: 'templateMarkup',
-        type: 'textarea',
-        label: 'Template Markup',
-        admin: {
-            condition: (data) => data.type === 'cloze-drag-drop',
-        },
-        },
-        {
-        name: 'possibleResponses',
-        type: 'array',
-        label: 'Possible Responses',
-        admin: {
-            condition: (data) => data.type === 'cloze-drag-drop',
-        },
-        fields: [
-            {
-            name: 'response',
+            name: 'questionID',
             type: 'text',
-            label: 'Response Text',
-            },
-        ],
-        },
-        {
-        name: 'correctAnswers',
-        type: 'array',
-        label: 'Set Correct Answers',
-        admin: {
-            condition: (data) => data.type === 'cloze-drag-drop',
-        },
-        fields: [
-            {
-            name: 'correctResponse',
-            type: 'text',
-            label: 'Correct Response',
-            },
-        ],
-        },
-        // Label Image with Drag & Drop Fields
-        {
-        name: 'image',
-        type: 'upload',
-        relationTo: 'media',
-        label: 'Image',
-        admin: {
-            condition: (data) => data.type === 'label-image-drag-drop',
-        },
-        },
-        {
-        name: 'responsePositions',
-        type: 'array',
-        label: 'Response Positions',
-        admin: {
-            condition: (data) => data.type === 'label-image-drag-drop',
-        },
-        fields: [
-            {
-            name: 'xCoordinate',
-            type: 'number',
-            label: 'X Coordinate',
-            },
-            {
-            name: 'yCoordinate',
-            type: 'number',
-            label: 'Y Coordinate',
-            },
-            {
-            name: 'responseText',
-            type: 'text',
-            label: 'Response Text',
-            },
-        ],
-        },
-        {
-        name: 'correctLabels',
-        type: 'array',
-        label: 'Correct Labels',
-        admin: {
-            condition: (data) => data.type === 'label-image-drag-drop',
-        },
-        fields: [
-            {
-            name: 'label',
-            type: 'text',
-            label: 'Label Text',
-            },
-        ],
-        },
-        // Number Line with Drag & Drop Fields
-        {
-        name: 'lineRange',
-        type: 'group',
-        label: 'Line Range (For Number Line)',
-        admin: {
-            condition: (data) => data.type === 'number-line-drag-drop',
-        },
-        fields: [
-            {
-            name: 'minValue',
-            type: 'number',
-            label: 'Minimum Value',
             required: true,
-            },
-            {
-            name: 'maxValue',
-            type: 'number',
-            label: 'Maximum Value',
+            label: 'Question ID',
+        },
+        {
+            name: 'questionType',
+            type: 'select',
             required: true,
-            },
-        ],
+            label: 'Question Type',
+            options: [
+                { value: 'multipleChoice', label: 'Multiple Choice' },
+                { value: 'dragAndDrop', label: 'Drag and Drop' },
+                { value: 'fillInTheBlanks', label: 'Fill in the blanks' },
+            ],
         },
         {
-        name: 'points',
-        type: 'array',
-        label: 'Points (For Number Line)',
-        admin: {
-            condition: (data) => data.type === 'number-line-drag-drop',
-        },
-        fields: [
-            {
-            name: 'point',
-            type: 'text',
-            label: 'Point Label',
+            name: 'templateMarkup',
+            type: 'textarea',
+            label: 'Question Text(Rich Text)',
+            admin: {
+                condition: (data) => data.questionType === 'dragAndDrop',
             },
-        ],
         },
         {
-        name: 'correctPlacement',
-        type: 'array',
-        label: 'Correct Placement',
-        admin: {
-            condition: (data) => data.type === 'number-line-drag-drop',
+            name: 'Zones',
+            type: 'array',
+            admin: {
+                condition: (data) => data.questionType === 'dragAndDrop',
+            },
+            fields: [
+                {
+                    name: 'Zones',
+                    type: 'group',
+                    fields: [
+                        {
+                            name: 'zoneID',
+                            type: 'text',
+                            label: 'Zone ID',
+                        },
+                        {
+                            name: 'lable',
+                            type: 'text',
+                            label: 'Lable',
+                        },
+                        {
+                            name: 'coordinates',
+                            type: 'group',
+                            fields: [
+                                {
+                                    name: 'x',
+                                    type: 'number',
+                                    label: 'X',
+                                },
+                                {
+                                    name: 'y',
+                                    type: 'number',
+                                    label: 'Y',
+                                },
+                                {
+                                    name: 'width',
+                                    type: 'number',
+                                    label: 'Width',
+                                },
+                                {
+                                    name: 'height',
+                                    type: 'number',
+                                    label: 'Height',
+                                },
+                            ]
+                        },
+                    ],
+                },
+            ],
         },
-        fields: [
-            {
-            name: 'pointLabel',
+        {
+            name: 'Draggables',
+            type: 'array',
+            admin: {
+                condition: (data) => data.questionType === 'dragAndDrop',
+            },
+            fields: [
+                {
+                    name: 'Draggables',
+                    type: 'group',
+                    fields: [
+                        {
+                            name: 'draggableImage',
+                            type: 'upload',
+                            relationTo: 'media',
+                            label: 'Draggable Image',
+                        },
+                        {
+                            name: 'correctZone',
+                            type: 'text',
+                            label: 'Correct Zone',
+                        },
+                    ],
+                },
+            ],
+        },
+        // Sidebar fields
+        {
+            name: 'createdBy',
+            type: 'relationship',
+            relationTo: 'users',
+            admin: {
+                position: 'sidebar', // Place this field in the sidebar
+            },
+        },
+        {
+            name: 'publishedAt',
+            type: 'date',
+            admin: {
+                position: 'sidebar', // Place this field in the sidebar
+            },
+        },
+        {
+            name: 'slug',
             type: 'text',
-            label: 'Point Label',
+            admin: {
+                position: 'sidebar', // Place this field in the sidebar
             },
-            {
-            name: 'position',
-            type: 'number',
-            label: 'Position on Number Line',
-            },
-        ],
         },
     ],
-}
+};
 
-export default Questions
+export default Questions;
